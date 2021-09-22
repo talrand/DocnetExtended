@@ -7,9 +7,9 @@ namespace DocnetExtended.Models
         public string Value { get; internal set; }
         public BoundBox Box { get; internal set; }
 
-        public Word() { }
+        internal Word() { }
 
-        public Word(string value)
+        internal Word(string value)
         {
             Value = value;
         }

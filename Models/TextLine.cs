@@ -10,7 +10,7 @@ namespace DocnetExtended.Models
         public string Value { get => ToString(); private set => Words.Add(new Word(value));}
         public List<Word> Words { get; internal set; }
 
-        public TextLine() 
+        internal TextLine() 
         {
             Words = new List<Word>();
             PagePosition = new Point(NotSet, NotSet);
