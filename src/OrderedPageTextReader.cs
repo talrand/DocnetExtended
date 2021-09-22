@@ -10,12 +10,12 @@ using static DocnetExtended.Constants;
 
 namespace DocnetExtended
 {
-    public class ExtendedPageReader : IDisposable
+    public class OrderedPageTextReader : IDisposable
     {
         private readonly int _pageIndex = 0;
         private readonly IDocReader _docReader = null;
 
-        public ExtendedPageReader(IDocReader docReader, int pageIndex)
+        public OrderedPageTextReader(IDocReader docReader, int pageIndex)
         {
             if (docReader == null) throw new ArgumentNullException(nameof(docReader));
 
