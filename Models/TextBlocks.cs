@@ -4,7 +4,7 @@ namespace DocnetExtended.Models
 {
     public class TextBlock
     {
-        public List<Word> Words { get; }
+        public List<Word> Words { get; internal set; }
 
         internal TextBlock()
         {

@@ -13,7 +13,7 @@ namespace DocnetExtended
     public class ExtendedPageReader : IDisposable
     {
         private readonly int _pageIndex = 0;
-        private readonly IDocReader _docReader = null;        
+        private readonly IDocReader _docReader = null;
 
         public ExtendedPageReader(IDocReader docReader, int pageIndex)
         {
@@ -48,40 +48,33 @@ namespace DocnetExtended
 
             List<TextLine> lines = GetTextLines();
             List<TextBlock> textBlocks = new List<TextBlock>();
-            decimal blockPerLine = 0;
+            decimal blocksPerLine = 0;
             decimal blockStartPos = 0;
             decimal blockEndPos = 0;
 
             using (var pageReader = _docReader.GetPageReader(_pageIndex))
             {
                 // Calculate no. blocks per line
-                blockPerLine = pageReader.GetPageWidth() / blockWidth;
+                blocksPerLine = pageReader.GetPageWidth() / blockWidth;
 
                 foreach (var line in lines)
                 {
-                    int currentBlock = 1;
-                    TextBlock textBlock = new TextBlock();
-
-                    do
+                    for (decimal i = 0; i < blocksPerLine; i++)
                     {
+                        TextBlock textBlock = new TextBlock();
+
                         // Set start and end position for text block
-                        blockStartPos = (currentBlock - 1) * blockWidth;
+                        blockStartPos = i * blockWidth;
                         blockEndPos = blockStartPos + blockWidth;
 
-                        foreach (var word in line.Words)
+                        // Find all words in the line that are within the bounds of the block
+                        textBlock.Words = line.Words.Where(w => w.Box.Left >= blockStartPos && w.Box.Left < blockEndPos).ToList();
+
+                        if (textBlock.Words.Count > 0)
                         {
-                            // Check if current word is within the bounds of the current block
-                            if (word.Box.Left >= blockStartPos && word.Box.Left < blockEndPos)
-                            {
-                                textBlock.Words.Add(word);
-                            }
+                            textBlocks.Add(textBlock);
                         }
-
-                        currentBlock += 1;
-
-                    } while (currentBlock < blockPerLine);
-
-                    textBlocks.Add(textBlock);
+                    }
                 }
             }
 
@@ -163,7 +156,7 @@ namespace DocnetExtended
                 }
             }
 
-            return textLines.SortToReadableOrder(); 
+            return textLines.SortToReadableOrder();
         }
     }
 }
