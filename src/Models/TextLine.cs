@@ -28,9 +28,9 @@ namespace DocnetExtended.Models
 
         public override string ToString()
         {
-            if (Words.Count == 0) return "";
+            if (Words.Count == 0) return string.Empty;
 
-            string value = "";
+            string value = string.Empty;
             Words.ForEach((Word w) => value += $"{w.Value} ");
             return value.Trim();
         }
