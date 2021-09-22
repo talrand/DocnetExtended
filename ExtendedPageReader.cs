@@ -44,6 +44,8 @@ namespace DocnetExtended
         /// <summary>Splits Text Lines into blocks of a specified size</summary>
         public List<TextBlock> GetTextBlocks(int blockWidth)
         {
+            if (blockWidth == 0) throw new ArgumentException($"{nameof(blockWidth)} must be greater than 0");
+
             List<TextLine> lines = GetTextLines();
             List<TextBlock> textBlocks = new List<TextBlock>();
             decimal blockPerLine = 0;
