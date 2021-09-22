@@ -25,7 +25,7 @@ namespace DocnetExtended
 
         public void Dispose() { }
 
-        /// <summary>Read text from the PDF in the order it appears on screen</summary>
+        /// <summary>Read text from the PDF page in the order it appears on screen</summary>
         public string GetTextInReadableOrder()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -41,7 +41,7 @@ namespace DocnetExtended
             return stringBuilder.ToString();
         }
 
-        /// <summary>Splits Text Lines into blocks of a specified size</summary>
+        /// <summary>Splits lines of text in the PDF page into blocks of a specified size</summary>
         public List<TextBlock> GetTextBlocks(int blockWidth)
         {
             if (blockWidth == 0) throw new ArgumentException($"{nameof(blockWidth)} must be greater than 0");
@@ -81,7 +81,19 @@ namespace DocnetExtended
             return textBlocks;
         }
 
-        /// <summary>Retrieve all lines of text in the PDF</summary>
+        /// <summary>Get all words from the PDF page in the order they appear on screen</summary>
+        public List<Word> GetWords()
+        {
+            List<TextLine> lines = GetTextLines();
+            List<Word> words = new List<Word>();
+
+            // Get all words from each line
+            lines.ForEach(l => l.Words.ForEach(w => words.Add(w)));
+
+            return words;
+        }
+
+        /// <summary>Get all lines of text in the PDF page</summary>
         public List<TextLine> GetTextLines()
         {
             List<TextLine> textLines = new List<TextLine>();
@@ -100,7 +112,7 @@ namespace DocnetExtended
 
                     if (character.Char.Equals('\n'))
                     {
-                        // As characters aren't in a readable order in the PDF structure, text lines may be fractured
+                        // As characters aren't in a readable order in the PDF structure, text lines may be fragmented
                         // Check if a line with the same Y position has already been added to the collection
                         TextLine existingTextLine = textLines.GetExistingTextLine(currentTextLine.PagePosition.Y);
 
