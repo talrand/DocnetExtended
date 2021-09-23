@@ -7,7 +7,7 @@ namespace DocnetExtended.Models
     public class TextLine
     {
         public Point PagePosition { get; internal set; }
-        public string Value { get => ToString();}
+        public string Text { get => ToString();}
         public List<Word> Words { get; internal set; }
 
         internal TextLine() 
