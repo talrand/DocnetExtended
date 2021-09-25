@@ -61,7 +61,7 @@ namespace DocnetExtended
                 {
                     for (int j = 0; j < blocksPerLine; j++)
                     {
-                        // Create new textblock. Note: +1 to line number and block number to ensure they're base 1 instead of base 0 
+                        // Create new textblock. Note: +1 to line number and block number to ensure they're base 1 instead of base 0
                         TextBlock textBlock = new TextBlock(i + 1, j + 1);
 
                         // Set start and end position for text block
