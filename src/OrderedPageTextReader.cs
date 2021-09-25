@@ -112,21 +112,8 @@ namespace DocnetExtended
 
                     if (character.Char.Equals('\n'))
                     {
-                        // As characters aren't in a readable order in the PDF structure, text lines may be fragmented
-                        // Check if a line with the same Y position has already been added to the collection
-                        TextLine existingTextLine = textLines.GetExistingTextLine(currentTextLine.PagePosition.Y);
-
-                        if (existingTextLine != null)
-                        {
-                            existingTextLine.Join(currentTextLine);
-                        }
-                        else
-                        {
-                            // Words may be jumbled due to PDF structure, need to sort them before adding text line  
-                            currentTextLine.Words = currentTextLine.Words.SortToReadableOrder();
-                            textLines.Add(currentTextLine);
-                        }
-
+                        // New line character detected. Add line to collection and create a new line
+                        textLines.AddLine(currentTextLine);
                         currentTextLine = new TextLine();
                     }
                     else
@@ -137,7 +124,7 @@ namespace DocnetExtended
                             currentTextLine.PagePosition = new Point(character.Box.Left, character.Box.Top);
                         }
 
-                        if (String.IsNullOrWhiteSpace(character.Char.ToString()))
+                        if (string.IsNullOrWhiteSpace(character.Char.ToString()))
                         {
                             // White space detected. Add word to collection and begin a new word
                             currentTextLine.Words.Add(word);
@@ -160,12 +147,14 @@ namespace DocnetExtended
                     }
                 }
 
-                // Add last line to collection
-                if (String.IsNullOrEmpty(word.Value))
+                // Add last word to last line
+                if (string.IsNullOrEmpty(word.Value) == false)
                 {
                     currentTextLine.Words.Add(word);
-                    textLines.Add(currentTextLine);
                 }
+
+                // Add last line to collection
+                textLines.AddLine(currentTextLine);
             }
 
             return textLines.SortToReadableOrder();
