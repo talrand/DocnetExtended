@@ -48,27 +48,27 @@ namespace DocnetExtended
 
             List<TextLine> lines = GetTextLines();
             List<TextBlock> textBlocks = new List<TextBlock>();
-            decimal blocksPerLine = 0;
-            decimal blockStartPos = 0;
-            decimal blockEndPos = 0;
+            int blocksPerLine = 0;
+            int blockStartPos = 0;
+            int blockEndPos = 0;
 
             using (var pageReader = _docReader.GetPageReader(_pageIndex))
             {
-                // Calculate no. blocks per line
-                blocksPerLine = pageReader.GetPageWidth() / blockWidth;
+                // Calculate no. blocks per line using the pigeonhole principe (https://en.wikipedia.org/wiki/Pigeonhole_principle)
+                blocksPerLine = (pageReader.GetPageWidth() + (blockWidth - 1)) / blockWidth;
 
-                foreach (var line in lines)
+                for (int i = 0; i < lines.Count; i++)
                 {
-                    for (decimal i = 0; i < blocksPerLine; i++)
+                    for (int j = 0; j < blocksPerLine; j++)
                     {
-                        TextBlock textBlock = new TextBlock();
+                        TextBlock textBlock = new TextBlock(i, j);
 
                         // Set start and end position for text block
-                        blockStartPos = i * blockWidth;
+                        blockStartPos = j * blockWidth;
                         blockEndPos = blockStartPos + blockWidth;
 
                         // Find all words in the line that are within the bounds of the block
-                        textBlock.Words = line.Words.Where(w => w.Box.Left >= blockStartPos && w.Box.Left < blockEndPos).ToList();
+                        textBlock.Words = lines[i].Words.Where(w => w.Box.Left >= blockStartPos && w.Box.Left < blockEndPos).ToList();
 
                         if (textBlock.Words.Count > 0)
                         {

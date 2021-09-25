@@ -6,12 +6,15 @@ namespace DocnetExtended.Models
     public class TextBlock
     {
         public List<Word> Words { get; internal set; }
-
         public string Text { get => ToString(); }
+        public int BlockNumber { get; private set; }
+        public int LineNumber { get; private set; }
 
-        internal TextBlock()
+        internal TextBlock(int lineNumber, int blockNumber)
         {
             Words = new List<Word>();
+            LineNumber = lineNumber;
+            BlockNumber = blockNumber;
         }
 
         public override string ToString()
