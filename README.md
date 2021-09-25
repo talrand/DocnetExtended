@@ -1,4 +1,4 @@
-# DocnetExtended
+# DocNetExtended
 DocNetExtended is a small extension library built upon the [DocNet library](https://github.com/GowenGit/docnet/), designed to extract text in a readable order from PDFs. 
 
 Features
