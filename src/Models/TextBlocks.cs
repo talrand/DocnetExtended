@@ -7,6 +7,8 @@ namespace DocnetExtended.Models
     {
         public List<Word> Words { get; internal set; }
 
+        public string Text { get => ToString(); }
+
         internal TextBlock()
         {
             Words = new List<Word>();
