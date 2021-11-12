@@ -16,6 +16,9 @@ namespace DocnetExtended.Models
 
         internal void UpdateEndBounds(int bottom, int right)
         {
+            // Don't update end bounds if passed values are invalid
+            if (right < Box.Left || bottom < Box.Top) return;
+
             Box = new BoundBox(Box.Left, Box.Top, right, bottom);
         }
     }
